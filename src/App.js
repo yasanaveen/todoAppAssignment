@@ -1,15 +1,29 @@
 
 import './App.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TodoList from './TodoList';
-
-
 
 function App() {
   const[task,setTask]=useState("");
   const[todos,setTodos]=useState([]); 
  const[editingIndex,setEditingIndex]=useState(null);
  const[editingTask,setEditingTask]=useState("");
+
+ useEffect(() => {
+  const storedTodos = localStorage.getItem("todos");
+
+  try {
+    setTodos(storedTodos ? JSON.parse(storedTodos) : []);
+  } catch (error) {
+    console.error("Error parsing JSON from localStorage", error);
+    setTodos([]);
+  }
+}, []);
+
+
+useEffect(()=>{
+  localStorage.setItem("todos",JSON.stringify(todos));
+},[todos]);
 
 
 
